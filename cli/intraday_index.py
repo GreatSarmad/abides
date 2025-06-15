@@ -13,7 +13,7 @@ import os
 import sys
 import numpy as np
 
-from joblib import Memory
+from cache import get_cache
 
 # Auto-detect terminal width.
 pd.options.display.width = None
@@ -21,8 +21,8 @@ pd.options.display.max_rows = 1000
 pd.options.display.max_colwidth = 200
 
 # Initialize a persistent memcache.
-mem_hist = Memory(cachedir='./.cached_plot_hist', verbose=0)
-mem_sim = Memory(cachedir='./.cached_plot_sim', verbose=0)
+mem_hist = get_cache('plot_hist')
+mem_sim = get_cache('plot_sim')
 
 
 PRINT_BASELINE = False

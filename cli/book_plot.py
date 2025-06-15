@@ -10,7 +10,7 @@ import sys
 
 from matplotlib.colors import LogNorm
 
-from joblib import Memory
+from cache import get_cache
 
 # Auto-detect terminal width.
 pd.options.display.width = None
@@ -18,9 +18,9 @@ pd.options.display.max_rows = 1000
 pd.options.display.max_colwidth = 200
 
 # Initialize a persistent memcache.
-mem = Memory(cachedir='./.cached_plot_book', verbose=0)
-mem_hist = Memory(cachedir='./.cached_plot_book_historical', verbose=0)
-mem_hist_plot = Memory(cachedir='./.cached_plot_book_historical_heatmap', verbose=0)
+mem = get_cache('plot_book')
+mem_hist = get_cache('plot_book_historical')
+mem_hist_plot = get_cache('plot_book_historical_heatmap')
 
 
 # Turn these into command line parameters.

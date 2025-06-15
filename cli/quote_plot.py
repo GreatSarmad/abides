@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import sys
 
-from joblib import Memory
+from cache import get_cache
 
 # Auto-detect terminal width.
 pd.options.display.width = None
@@ -12,7 +12,7 @@ pd.options.display.max_rows = 1000
 pd.options.display.max_colwidth = 200
 
 # Initialize a persistent memcache.
-mem_sim = Memory(cachedir='./.cached_plot_sim', verbose=0)
+mem_sim = get_cache('plot_sim')
 
 
 # Used to read and cache simulated quotes (best bid/ask).
