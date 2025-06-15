@@ -18,5 +18,12 @@ cd project
 git clone https://github.com/abides-sim/abides.git
 cd abides
 pip install -r requirements.txt
+
+# run a sample configuration
+python -u abides.py -c rmsc01
 ```
+
+The simulation writes logs to a timestamped directory under `./log/`.
+You can visualize results using the analysis tools in `cli/`, e.g.
+`cli/ticker_plot.py`.
 
