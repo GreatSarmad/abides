@@ -17,7 +17,7 @@ from math import ceil, floor
 ###### that would otherwise have been repeated many times.                    ######
 
 def get_rand_obj(seed_obj):
-  return np.random.RandomState(seed = seed_obj.randint(low = 0, high = 2**32))
+  return np.random.RandomState(seed = seed_obj.randint(low = 0, high = np.iinfo(np.int32).max))
 
 
 ###### One-time configuration section.  This section sets up definitions that ######
@@ -209,12 +209,12 @@ print ("Configuration seed: {}\n".format(seed))
 ### seed for each simulation, but the entire experiment will still be deterministic
 ### given the same initial (global) seed.
 
-kernel_seeds = np.random.RandomState(seed=np.random.randint(low=0,high=2**32))
+kernel_seeds = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max))
 
 symbol_seeds = {}
-for sym in symbols:  symbol_seeds[sym] = np.random.RandomState(seed=np.random.randint(low=0,high=2**32))
+for sym in symbols:  symbol_seeds[sym] = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max))
 
-agent_seeds = [ np.random.RandomState(seed=np.random.randint(low=0,high=2**32)) ] * num_agents
+agent_seeds = [ np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)) ] * num_agents
 
 
 

@@ -131,13 +131,13 @@ defaultComputationDelay = 1000000000 * 5   # five seconds
 
 
 ### Configure the Kernel.
-kernel = Kernel("Base Kernel", random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32)))
+kernel = Kernel("Base Kernel", random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)))
 
 ### Obtain random state for whatever latency model will be used.
-latency_rstate = np.random.RandomState(seed=np.random.randint(low=0,high=2**32))
+latency_rstate = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max))
 
 ### Obtain a seed for the train-test split shuffling.
-shuffle_seed = np.random.randint(low=0,high=2**32)
+shuffle_seed = np.random.randint(low=0,high=np.iinfo(np.int32).max)
 
 ### Configure the agents.  When conducting "agent of change" experiments, the
 ### new agents should be added at the END only.
@@ -181,7 +181,7 @@ X_train, X_test, y_train, y_test = train_test_split(X_data, y_data, test_size=0.
 ### Configure a service agent.
 
 agents.extend([ PPFL_ServiceAgent(0, "PPFL Service Agent 0", "PPFL_ServiceAgent",
-                random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32)),
+                random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)),
                 msg_fwd_delay=0, iterations = num_iterations, num_clients = num_clients) ])
 agent_types.extend(["PPFL_ServiceAgent"])
 agent_count += 1
@@ -215,7 +215,7 @@ for i in range (a, b):
                 clear_learning = clear_learning, num_clients = num_clients, num_subgraphs = num_subgraphs,
                 multiplier = accy_multiplier, X_train = X_train, y_train = y_train, X_test = X_test, y_test = y_test,
                 split_size = split_size, secret_scale = secret_scale, collusion = collusion,
-                random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32))))
+                random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max))))
 
 agent_types.extend([ "PPFL_ClientAgent" for i in range(a,b) ])
 agent_count += num_clients
