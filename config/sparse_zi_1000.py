@@ -126,11 +126,11 @@ defaultComputationDelay = 1000000000        # one second
 
 # Note: sigma_s is no longer used by the agents or the fundamental (for sparse discrete simulation).
 
-symbols = { 'JPM' : { 'r_bar' : 1e5, 'kappa' : 1.67e-12, 'agent_kappa' : 1.67e-15, 'sigma_s' : 0, 'fund_vol' : 1e-8, 'megashock_lambda_a' : 2.77778e-13, 'megashock_mean' : 1e3, 'megashock_var' : 5e4, 'random_state' : np.random.RandomState(seed=np.random.randint(low=0,high=2**32, dtype='uint64')) } }
+symbols = { 'JPM' : { 'r_bar' : 1e5, 'kappa' : 1.67e-12, 'agent_kappa' : 1.67e-15, 'sigma_s' : 0, 'fund_vol' : 1e-8, 'megashock_lambda_a' : 2.77778e-13, 'megashock_mean' : 1e3, 'megashock_var' : 5e4, 'random_state' : np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max, dtype='uint64')) } }
  
 
 ### Configure the Kernel.
-kernel = Kernel("Base Kernel", random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32, dtype='uint64')))
+kernel = Kernel("Base Kernel", random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max, dtype='uint64')))
 
 
 
@@ -157,7 +157,7 @@ oracle = SparseMeanRevertingOracle(mkt_open, mkt_close, symbols)
 
 # Create the exchange.
 num_exchanges = 1
-agents.extend([ ExchangeAgent(j, "Exchange Agent {}".format(j), "ExchangeAgent", mkt_open, mkt_close, [s for s in symbols], log_orders=log_orders, book_freq=book_freq, pipeline_delay = 0, computation_delay = 0, stream_history = 10, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32, dtype='uint64')))
+agents.extend([ ExchangeAgent(j, "Exchange Agent {}".format(j), "ExchangeAgent", mkt_open, mkt_close, [s for s in symbols], log_orders=log_orders, book_freq=book_freq, pipeline_delay = 0, computation_delay = 0, stream_history = 10, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max, dtype='uint64')))
                 for j in range(agent_count, agent_count + num_exchanges) ])
 agent_types.extend(["ExchangeAgent" for j in range(num_exchanges)])
 agent_count += num_exchanges
@@ -185,7 +185,7 @@ zi = [ (143, 0, 250, 1), (143, 0, 500, 1), (143, 0, 1000, 0.8), (143, 0, 1000, 1
 # minutes.
 for i,x in enumerate(zi):
   strat_name = "Type {} [{} <= R <= {}, eta={}]".format(i+1, x[1], x[2], x[3])
-  agents.extend([ ZeroIntelligenceAgent(j, "ZI Agent {} {}".format(j, strat_name), "ZeroIntelligenceAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32, dtype='uint64')),log_orders=log_orders, symbol=symbol, starting_cash=starting_cash, sigma_n=sigma_n, r_bar=s['r_bar'], kappa=s['agent_kappa'], sigma_s=s['fund_vol'], q_max=10, sigma_pv=5e6, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=1e-12) for j in range(agent_count,agent_count+x[0]) ])
+  agents.extend([ ZeroIntelligenceAgent(j, "ZI Agent {} {}".format(j, strat_name), "ZeroIntelligenceAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max, dtype='uint64')),log_orders=log_orders, symbol=symbol, starting_cash=starting_cash, sigma_n=sigma_n, r_bar=s['r_bar'], kappa=s['agent_kappa'], sigma_s=s['fund_vol'], q_max=10, sigma_pv=5e6, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=1e-12) for j in range(agent_count,agent_count+x[0]) ])
   agent_types.extend([ "ZeroIntelligenceAgent {}".format(strat_name) for j in range(x[0]) ])
   agent_count += x[0]
 

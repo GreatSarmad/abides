@@ -1,6 +1,9 @@
 import argparse
 import pandas as pd
-from pandas.io.json import json_normalize
+try:
+    from pandas import json_normalize
+except ImportError:  # pragma: no cover - fallback for older pandas
+    from pandas.io.json import json_normalize
 import json
 import os
 
