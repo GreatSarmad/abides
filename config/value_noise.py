@@ -125,11 +125,11 @@ defaultComputationDelay = 1000000000  # one second
 
 symbols = {'JPM': {'r_bar': 1e5, 'kappa': 1.67e-12, 'agent_kappa': 1.67e-15, 'sigma_s': 0, 'fund_vol': 1e-8,
                    'megashock_lambda_a': 2.77778e-13, 'megashock_mean': 1e3, 'megashock_var': 5e4,
-                   'random_state': np.random.RandomState(seed=np.random.randint(low=0, high=2 ** 32, dtype='uint64'))}}
+                   'random_state': np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max, dtype='uint64'))}}
 
 ### Configure the Kernel.
 kernel = Kernel("Base Kernel",
-                random_state=np.random.RandomState(seed=np.random.randint(low=0, high=2 ** 32, dtype='uint64')))
+                random_state=np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max, dtype='uint64')))
 
 ### Configure the agents.  When conducting "agent of change" experiments, the
 ### new agents should be added at the END only.
@@ -154,7 +154,7 @@ num_exchanges = 1
 agents.extend([ExchangeAgent(j, "Exchange Agent {}".format(j), "ExchangeAgent", mkt_open, mkt_close,
                              [s for s in symbols], log_orders=log_orders, book_freq=book_freq, pipeline_delay=0,
                              computation_delay=0, stream_history=10, random_state=np.random.RandomState(
-        seed=np.random.randint(low=0, high=2 ** 32, dtype='uint64')))
+        seed=np.random.randint(low=0, high=np.iinfo(np.int32).max, dtype='uint64')))
                for j in range(agent_count, agent_count + num_exchanges)])
 agent_types.extend(["ExchangeAgent" for j in range(num_exchanges)])
 agent_count += num_exchanges
@@ -182,7 +182,7 @@ num_noise = 100
 agents.extend( [NoiseAgent(j, "NoiseAgent {}".format(j),
                                          "NoiseAgent",
                                          random_state=np.random.RandomState(
-                                             seed=np.random.randint(low=0, high=2 ** 32, dtype='uint64')),
+                                             seed=np.random.randint(low=0, high=np.iinfo(np.int32).max, dtype='uint64')),
                                          log_orders=log_orders, symbol=symbol, starting_cash=starting_cash,
                                          wakeup_time = mkt_open + np.random.rand() * (mkt_close - mkt_open) ) for j in range(agent_count, agent_count + num_noise )])
 agent_count += num_noise
@@ -197,7 +197,7 @@ num_value = 50
 agents.extend([ValueAgent(j, "Value Agent {}".format(j),
                                          "ValueAgent {}".format(j),
                                          random_state=np.random.RandomState(
-                                             seed=np.random.randint(low=0, high=2 ** 32, dtype='uint64')),
+                                             seed=np.random.randint(low=0, high=np.iinfo(np.int32).max, dtype='uint64')),
                                          log_orders=log_orders, symbol=symbol, #starting_cash=starting_cash,
                                          sigma_n=sigma_n, r_bar=s['r_bar'], kappa=s['agent_kappa'],
                                          sigma_s=s['fund_vol'],
