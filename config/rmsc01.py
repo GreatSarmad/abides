@@ -99,7 +99,7 @@ agents.extend([ExchangeAgent(id=0,
                              computation_delay=0,
                              stream_history=10,
                              book_freq=0,
-                             random_state=np.random.RandomState(seed=np.random.randint(low=0, high=2 ** 32,
+                             random_state=np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max,
                                                                                        dtype='uint64')))])
 agent_types.extend("ExchangeAgent")
 agent_count += 1
@@ -114,7 +114,7 @@ agents.extend([MarketMakerAgent(id=j,
                                 min_size=500,
                                 max_size=1000,
                                 log_orders=False,
-                                random_state=np.random.RandomState(seed=np.random.randint(low=0, high=2 ** 32,
+                                random_state=np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max,
                                                                                           dtype='uint64')))
                for j in range(agent_count, agent_count + num_mm_agents)])
 
@@ -130,7 +130,7 @@ symbols = {symbol: {'r_bar': 1e5,
                     'megashock_lambda_a': 2.77778e-13,
                     'megashock_mean': 1e3,
                     'megashock_var': 5e4,
-                    'random_state': np.random.RandomState(seed=np.random.randint(low=0, high=2 ** 32,
+                    'random_state': np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max,
                                                                                  dtype='uint64'))}}
 oracle = SparseMeanRevertingOracle(mkt_open, mkt_close, symbols)
 
@@ -151,7 +151,7 @@ agents.extend([ZeroIntelligenceAgent(id=j,
                                      eta=1,
                                      lambda_a=1e-12,
                                      log_orders=False,
-                                     random_state=np.random.RandomState(seed=np.random.randint(low=0, high=2 ** 32,
+                                     random_state=np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max,
                                                                                                dtype='uint64')))
                for j in range(agent_count, agent_count + num_zi_agents)])
 agent_types.extend("ZeroIntelligenceAgent")
@@ -176,7 +176,7 @@ agents.extend([HeuristicBeliefLearningAgent(id=j,
                                             lambda_a=1e-12,
                                             L=2,
                                             log_orders=False,
-                                            random_state=np.random.RandomState(seed=np.random.randint(low=0, high=2 ** 32,
+                                            random_state=np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max,
                                                                                                       dtype='uint64')))
                for j in range(agent_count, agent_count + num_hbl_agents)])
 agent_types.extend("HeuristicBeliefLearningAgent")
@@ -192,7 +192,7 @@ agents.extend([MomentumAgent(id=j,
                              min_size=1,
                              max_size=10,
                              log_orders=False,
-                             random_state=np.random.RandomState(seed=np.random.randint(low=0, high=2 ** 32,
+                             random_state=np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max,
                                                                                        dtype='uint64')))
                for j in range(agent_count, agent_count + num_momentum_agents)])
 agent_types.extend("MomentumAgent")
@@ -214,13 +214,13 @@ if args.agent_name:
                         min_size=1, 
                         max_size=10, 
                         log_orders=False, 
-                        random_state=np.random.RandomState(seed=np.random.randint(low=0,high=2**32,dtype='uint64')))])
+                        random_state=np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max,dtype='uint64')))])
     agent_count += 1
 
 ########################################################################################################################
 ########################################### KERNEL AND OTHER CONFIG ####################################################
 
-kernel = Kernel("RMSC01 Kernel", random_state=np.random.RandomState(seed=np.random.randint(low=0, high=2 ** 32,
+kernel = Kernel("RMSC01 Kernel", random_state=np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max,
                                                                                                   dtype='uint64')))
 
 kernelStartTime = historical_date
@@ -230,7 +230,7 @@ defaultComputationDelay = 50  # 50 nanoseconds
 
 # LATENCY
 
-latency_rstate = np.random.RandomState(seed=np.random.randint(low=0, high=2**32))
+latency_rstate = np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max))
 pairwise = (agent_count, agent_count)
 
 # All agents sit on line from Seattle to NYC

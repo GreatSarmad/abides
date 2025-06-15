@@ -92,7 +92,7 @@ agents.extend([ExchangeAgent(id=0,
                              computation_delay=0,
                              stream_history=10,
                              book_freq='all',
-                             random_state=np.random.RandomState(seed=np.random.randint(low=0, high=2 ** 32,
+                             random_state=np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max,
                                                                                        dtype='uint64')))])
 agent_types.extend("ExchangeAgent")
 agent_count += 1
@@ -112,7 +112,7 @@ agents.extend([MarketReplayAgent(id=1,
                                  orders_file_path=orders_file_path,
                                  processed_orders_folder_path='/efs/data/marketreplay/',
                                  starting_cash=0,
-                                 random_state=np.random.RandomState(seed=np.random.randint(low=0, high=2 ** 32,
+                                 random_state=np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max,
                                                                                            dtype='uint64')))])
 agent_types.extend("MarketReplayAgent")
 agent_count += 1
@@ -120,7 +120,7 @@ agent_count += 1
 ########################################################################################################################
 ########################################### KERNEL AND OTHER CONFIG ####################################################
 
-kernel = Kernel("Market Replay Kernel", random_state=np.random.RandomState(seed=np.random.randint(low=0, high=2 ** 32,
+kernel = Kernel("Market Replay Kernel", random_state=np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max,
                                                                                                   dtype='uint64')))
 
 kernelStartTime = historical_date_pd
