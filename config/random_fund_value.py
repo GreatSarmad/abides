@@ -96,7 +96,7 @@ symbols = {symbol: {'r_bar': r_bar,
                     'megashock_lambda_a': 2.77778e-13,
                     'megashock_mean': 1e3,
                     'megashock_var': 5e4,
-                    'random_state': np.random.RandomState(seed=np.random.randint(low=0, high=2 ** 32, dtype='uint64'))}}
+                    'random_state': np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max, dtype='uint64'))}}
 
 oracle = SparseMeanRevertingOracle(mkt_open, mkt_close, symbols)
 
@@ -112,7 +112,7 @@ agents.extend([ExchangeAgent(id=0,
                              computation_delay=0,
                              stream_history=10,
                              book_freq=book_freq,
-                             random_state=np.random.RandomState(seed=np.random.randint(low=0, high=2 ** 32, dtype='uint64')))])
+                             random_state=np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max, dtype='uint64')))])
 agent_types.extend("ExchangeAgent")
 agent_count += 1
 
@@ -125,7 +125,7 @@ agents.extend([NoiseAgent(id=j,
                           starting_cash=starting_cash,
                           wakeup_time=util.get_wake_time(mkt_open, mkt_close),
                           log_orders=log_orders,
-                          random_state=np.random.RandomState(seed=np.random.randint(low=0, high=2 ** 32, dtype='uint64')))
+                          random_state=np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max, dtype='uint64')))
                for j in range(agent_count, agent_count + num_noise)])
 agent_count += num_noise
 agent_types.extend(['NoiseAgent'])
@@ -141,7 +141,7 @@ agents.extend([ValueAgent(id=j,
                           r_bar=r_bar,
                           kappa=kappa,
                           lambda_a=lambda_a,
-                          random_state=np.random.RandomState(seed=np.random.randint(low=0, high=2 ** 32, dtype='uint64')))
+                          random_state=np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max, dtype='uint64')))
                for j in range(agent_count, agent_count + num_value)])
 agent_count += num_value
 agent_types.extend(['ValueAgent'])
@@ -149,7 +149,7 @@ agent_types.extend(['ValueAgent'])
 ########################################################################################################################
 ########################################### KERNEL AND OTHER CONFIG ####################################################
 
-kernel = Kernel("random_fund_value Kernel", random_state=np.random.RandomState(seed=np.random.randint(low=0, high=2 ** 32,
+kernel = Kernel("random_fund_value Kernel", random_state=np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max,
                                                                                                   dtype='uint64')))
 
 kernelStartTime = historical_date
@@ -159,7 +159,7 @@ defaultComputationDelay = 50  # 50 nanoseconds
 
 # LATENCY
 
-latency_rstate = np.random.RandomState(seed=np.random.randint(low=0, high=2**32))
+latency_rstate = np.random.RandomState(seed=np.random.randint(low=0, high=np.iinfo(np.int32).max))
 pairwise = (agent_count, agent_count)
 
 # All agents sit on line from Seattle to NYC

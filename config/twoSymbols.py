@@ -150,11 +150,11 @@ symbols = { 'SYM1' : { 'r_bar' : 100000, 'kappa' : 0.05, 'sigma_s' : sigma_s }, 
 #symbols = { 'IBM' : { 'r_bar' : 100000, 'kappa' : 0.05, 'sigma_s' : sigma_s }, 'GOOG' : { 'r_bar' : 150000, 'kappa' : 0.05, 'sigma_s' : sigma_s } }
 symbols_full = symbols.copy()
 
-#seed=np.random.randint(low=0,high=2**32)
+#seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)
 #seed = 2000
 
 ### Configure the Kernel.
-kernel = Kernel("Base Kernel", random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32)))
+kernel = Kernel("Base Kernel", random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)))
 
 
 
@@ -182,7 +182,7 @@ oracle = MeanRevertingOracle(mkt_open, mkt_close, symbols)
 
 # Create the exchange.
 num_exchanges = 1
-agents.extend([ ExchangeAgent(j, "Exchange Agent {}".format(j), "ExchangeAgent", mkt_open, mkt_close, [s for s in symbols_full], log_orders=log_orders, book_freq=book_freq, pipeline_delay = 0, computation_delay = 0, stream_history = 10, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32)))
+agents.extend([ ExchangeAgent(j, "Exchange Agent {}".format(j), "ExchangeAgent", mkt_open, mkt_close, [s for s in symbols_full], log_orders=log_orders, book_freq=book_freq, pipeline_delay = 0, computation_delay = 0, stream_history = 10, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)))
                 for j in range(agent_count, agent_count + num_exchanges) ])
 agent_types.extend(["ExchangeAgent" for j in range(num_exchanges)])
 agent_count += num_exchanges
@@ -196,7 +196,7 @@ prime_close = midnight + pd.to_timedelta('17:00:01')
 
 # Create the primary.
 num_primes = 1
-agents.extend([ EtfPrimaryAgent(j, "ETF Primary Agent {}".format(j), "EtfPrimaryAgent", prime_open, prime_close, 'ETF', pipeline_delay = 0, computation_delay = 0, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32)))
+agents.extend([ EtfPrimaryAgent(j, "ETF Primary Agent {}".format(j), "EtfPrimaryAgent", prime_open, prime_close, 'ETF', pipeline_delay = 0, computation_delay = 0, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)))
                 for j in range(agent_count, agent_count + num_primes) ])
 agent_types.extend(["EtfPrimeAgent" for j in range(num_primes)])
 agent_count += num_primes
@@ -279,19 +279,19 @@ hbl = [ (75, 250, 500, 1, 2), (75, 250, 500, 1, 3), (75, 250, 500, 1, 5), (75, 2
 # ZI strategy split.
 for i,x in enumerate(zi):
   strat_name = "Type {} [{} <= R <= {}, eta={}]".format(i+1, x[1], x[2], x[3])
-  agents.extend([ ZeroIntelligenceAgent(j, "ZI Agent {} {}".format(j, strat_name), "ZeroIntelligenceAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32)),log_orders=log_orders, symbol=symbol1, starting_cash=starting_cash, sigma_n=sigma_n, r_bar=s1['r_bar'], q_max=10, sigma_pv=5000000, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=0.005) for j in range(agent_count,agent_count+x[0]) ])
+  agents.extend([ ZeroIntelligenceAgent(j, "ZI Agent {} {}".format(j, strat_name), "ZeroIntelligenceAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)),log_orders=log_orders, symbol=symbol1, starting_cash=starting_cash, sigma_n=sigma_n, r_bar=s1['r_bar'], q_max=10, sigma_pv=5000000, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=0.005) for j in range(agent_count,agent_count+x[0]) ])
   agent_types.extend([ "ZeroIntelligenceAgent {}".format(strat_name) for j in range(x[0]) ])
   agent_count += x[0]
 
 for i,x in enumerate(zi):
   strat_name = "Type {} [{} <= R <= {}, eta={}]".format(i+1, x[1], x[2], x[3])
-  agents.extend([ ZeroIntelligenceAgent(j, "ZI Agent {} {}".format(j, strat_name), "ZeroIntelligenceAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32)),log_orders=log_orders, symbol=symbol2, starting_cash=starting_cash, sigma_n=sigma_n, r_bar=s2['r_bar'], q_max=10, sigma_pv=5000000, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=0.005) for j in range(agent_count,agent_count+x[0]) ])
+  agents.extend([ ZeroIntelligenceAgent(j, "ZI Agent {} {}".format(j, strat_name), "ZeroIntelligenceAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)),log_orders=log_orders, symbol=symbol2, starting_cash=starting_cash, sigma_n=sigma_n, r_bar=s2['r_bar'], q_max=10, sigma_pv=5000000, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=0.005) for j in range(agent_count,agent_count+x[0]) ])
   agent_types.extend([ "ZeroIntelligenceAgent {}".format(strat_name) for j in range(x[0]) ])
   agent_count += x[0]
     
 for i,x in enumerate(zi):
   strat_name = "Type {} [{} <= R <= {}, eta={}]".format(i+1, x[1], x[2], x[3])
-  agents.extend([ ZeroIntelligenceAgent(j, "ZI Agent {} {}".format(j, strat_name), "ZeroIntelligenceAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32)),log_orders=log_orders, symbol=symbol3, starting_cash=starting_cash, sigma_n=sigma_n, portfolio = {'SYM1':s1['r_bar'], 'SYM2': s2['r_bar']}, q_max=10, sigma_pv=5000000, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=0.005) for j in range(agent_count,agent_count+x[0]) ])
+  agents.extend([ ZeroIntelligenceAgent(j, "ZI Agent {} {}".format(j, strat_name), "ZeroIntelligenceAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)),log_orders=log_orders, symbol=symbol3, starting_cash=starting_cash, sigma_n=sigma_n, portfolio = {'SYM1':s1['r_bar'], 'SYM2': s2['r_bar']}, q_max=10, sigma_pv=5000000, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=0.005) for j in range(agent_count,agent_count+x[0]) ])
   agent_types.extend([ "ZeroIntelligenceAgent {}".format(strat_name) for j in range(x[0]) ])
   agent_count += x[0]
 
@@ -299,19 +299,19 @@ for i,x in enumerate(zi):
 # HBL strategy split.
 for i,x in enumerate(hbl):
   strat_name = "Type {} [{} <= R <= {}, eta={}, L={}]".format(i+1, x[1], x[2], x[3], x[4])
-  agents.extend([ HeuristicBeliefLearningAgent(j, "HBL Agent {} {}".format(j, strat_name), "HeuristicBeliefLearningAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32)), log_orders=log_orders, symbol=symbol1, starting_cash=starting_cash, sigma_n=sigma_n, r_bar=s1['r_bar'], q_max=10, sigma_pv=5000000, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=0.005, L=x[4]) for j in range(agent_count,agent_count+x[0]) ])
+  agents.extend([ HeuristicBeliefLearningAgent(j, "HBL Agent {} {}".format(j, strat_name), "HeuristicBeliefLearningAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)), log_orders=log_orders, symbol=symbol1, starting_cash=starting_cash, sigma_n=sigma_n, r_bar=s1['r_bar'], q_max=10, sigma_pv=5000000, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=0.005, L=x[4]) for j in range(agent_count,agent_count+x[0]) ])
   agent_types.extend([ "HeuristicBeliefLearningAgent {}".format(strat_name) for j in range(x[0]) ])
   agent_count += x[0]
 
 for i,x in enumerate(hbl):
   strat_name = "Type {} [{} <= R <= {}, eta={}, L={}]".format(i+1, x[1], x[2], x[3], x[4])
-  agents.extend([ HeuristicBeliefLearningAgent(j, "HBL Agent {} {}".format(j, strat_name), "HeuristicBeliefLearningAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32)), log_orders=log_orders, symbol=symbol2, starting_cash=starting_cash, sigma_n=sigma_n, r_bar=s2['r_bar'], q_max=10, sigma_pv=5000000, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=0.005, L=x[4]) for j in range(agent_count,agent_count+x[0]) ])
+  agents.extend([ HeuristicBeliefLearningAgent(j, "HBL Agent {} {}".format(j, strat_name), "HeuristicBeliefLearningAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)), log_orders=log_orders, symbol=symbol2, starting_cash=starting_cash, sigma_n=sigma_n, r_bar=s2['r_bar'], q_max=10, sigma_pv=5000000, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=0.005, L=x[4]) for j in range(agent_count,agent_count+x[0]) ])
   agent_types.extend([ "HeuristicBeliefLearningAgent {}".format(strat_name) for j in range(x[0]) ])
   agent_count += x[0]
 
 for i,x in enumerate(hbl):
   strat_name = "Type {} [{} <= R <= {}, eta={}, L={}]".format(i+1, x[1], x[2], x[3], x[4])
-  agents.extend([ HeuristicBeliefLearningAgent(j, "HBL Agent {} {}".format(j, strat_name), "HeuristicBeliefLearningAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32)), log_orders=log_orders, symbol=symbol3, starting_cash=starting_cash, sigma_n=sigma_n, portfolio = {'SYM1':s1['r_bar'], 'SYM2': s2['r_bar']}, q_max=10, sigma_pv=5000000, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=0.005, L=x[4]) for j in range(agent_count,agent_count+x[0]) ])
+  agents.extend([ HeuristicBeliefLearningAgent(j, "HBL Agent {} {}".format(j, strat_name), "HeuristicBeliefLearningAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)), log_orders=log_orders, symbol=symbol3, starting_cash=starting_cash, sigma_n=sigma_n, portfolio = {'SYM1':s1['r_bar'], 'SYM2': s2['r_bar']}, q_max=10, sigma_pv=5000000, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=0.005, L=x[4]) for j in range(agent_count,agent_count+x[0]) ])
   agent_types.extend([ "HeuristicBeliefLearningAgent {}".format(strat_name) for j in range(x[0]) ])
   agent_count += x[0]
     
@@ -320,7 +320,7 @@ i = agent_count
 lookback = 10
 num_tf = 20
 for j in range(num_tf):
-  agents.append(MomentumAgent(i, "Momentum Agent {}".format(i), symbol=symbol1, starting_cash = starting_cash, lookback=lookback, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32)), log_orders = log_orders))
+  agents.append(MomentumAgent(i, "Momentum Agent {}".format(i), symbol=symbol1, starting_cash = starting_cash, lookback=lookback, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)), log_orders = log_orders))
   agent_types.append("MomentumAgent {}".format(i))
   i+=1
 agent_count += num_tf
@@ -342,7 +342,7 @@ i = agent_count
 gamma = 0
 num_arb = 25
 for j in range(num_arb):
-  agents.append(EtfArbAgent(i, "Etf Arb Agent {}".format(i), "EtfArbAgent", portfolio = ['SYM1','SYM2'], gamma = gamma, starting_cash = starting_cash, lambda_a=0.005, log_orders=log_orders, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32))))
+  agents.append(EtfArbAgent(i, "Etf Arb Agent {}".format(i), "EtfArbAgent", portfolio = ['SYM1','SYM2'], gamma = gamma, starting_cash = starting_cash, lambda_a=0.005, log_orders=log_orders, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max))))
   agent_types.append("EtfArbAgent {}".format(i))
   i+=1
 agent_count += num_arb
@@ -353,7 +353,7 @@ agent_count += num_arb
 #num_mm = 10
 mm = [(5,0),(5,50),(5,100),(5,200),(5,300)]
 #for j in range(num_mm):
-  #agents.append(EtfMarketMakerAgent(i, "Etf MM Agent {}".format(i), "EtfMarketMakerAgent", portfolio = ['IBM','GOOG'], gamma = gamma, starting_cash = starting_cash, lambda_a=0.005, log_orders=log_orders, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32))))
+  #agents.append(EtfMarketMakerAgent(i, "Etf MM Agent {}".format(i), "EtfMarketMakerAgent", portfolio = ['IBM','GOOG'], gamma = gamma, starting_cash = starting_cash, lambda_a=0.005, log_orders=log_orders, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max))))
   #agent_types.append("EtfMarketMakerAgent {}".format(i))
   #i+=1
 #agent_count += num_mm
@@ -361,7 +361,7 @@ mm = [(5,0),(5,50),(5,100),(5,200),(5,300)]
 for i,x in enumerate(mm):
   strat_name = "Type {} [gamma = {}]".format(i+1, x[1])
   print(strat_name)
-  agents.extend([ EtfMarketMakerAgent(j, "Etf MM Agent {} {}".format(j, strat_name), "EtfMarketMakerAgent {}".format(strat_name), portfolio = ['SYM1','SYM2'], gamma = x[1], starting_cash = starting_cash, lambda_a=0.005, log_orders=log_orders, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32))) for j in range(agent_count,agent_count+x[0]) ])
+  agents.extend([ EtfMarketMakerAgent(j, "Etf MM Agent {} {}".format(j, strat_name), "EtfMarketMakerAgent {}".format(strat_name), portfolio = ['SYM1','SYM2'], gamma = x[1], starting_cash = starting_cash, lambda_a=0.005, log_orders=log_orders, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max))) for j in range(agent_count,agent_count+x[0]) ])
   agent_types.extend([ "EtfMarketMakerAgent {}".format(strat_name) for j in range(x[0]) ])
   agent_count += x[0]
 
@@ -371,18 +371,18 @@ for i,x in enumerate(mm):
 impact_time = midnight + pd.to_timedelta('09:30:00.0000002')
 
 i = agent_count
-agents.append(ImpactAgent(i, "Impact Agent1 {}".format(i), "ImpactAgent1", symbol = "SYM1", starting_cash = starting_cash, impact = impact, impact_time = impact_time, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32))))
+agents.append(ImpactAgent(i, "Impact Agent1 {}".format(i), "ImpactAgent1", symbol = "SYM1", starting_cash = starting_cash, impact = impact, impact_time = impact_time, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max))))
 agent_types.append("ImpactAgent 1 {}".format(i))
 agent_count += 1
 
 impact_time = midnight + pd.to_timedelta('09:30:00.0000005')
 i = agent_count
-agents.append(ImpactAgent(i, "Impact Agent2 {}".format(i), "ImpactAgent2", symbol = "SYM1", starting_cash = starting_cash, impact = impact, impact_time = impact_time, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32))))
+agents.append(ImpactAgent(i, "Impact Agent2 {}".format(i), "ImpactAgent2", symbol = "SYM1", starting_cash = starting_cash, impact = impact, impact_time = impact_time, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max))))
 agent_types.append("ImpactAgent 2 {}".format(i))
 agent_count += 1
 
 #i = agent_count
-#agents.append(ImpactAgent(i, "Impact Agent3 {}".format(i), "ImpactAgent3", symbol = "ETF", starting_cash = starting_cash, greed = greed, impact = impact, impact_time = impact_time, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32))))
+#agents.append(ImpactAgent(i, "Impact Agent3 {}".format(i), "ImpactAgent3", symbol = "ETF", starting_cash = starting_cash, greed = greed, impact = impact, impact_time = impact_time, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max))))
 #agent_types.append("ImpactAgent 3 {}".format(i))
 #agent_count += 1
 

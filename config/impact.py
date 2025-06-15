@@ -147,7 +147,7 @@ symbols = { 'IBM' : { 'r_bar' : 100000, 'kappa' : 0.05, 'sigma_s' : sigma_s } }
 
 
 ### Configure the Kernel.
-kernel = Kernel("Base Kernel", random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32)))
+kernel = Kernel("Base Kernel", random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)))
 
 
 
@@ -174,7 +174,7 @@ oracle = MeanRevertingOracle(mkt_open, mkt_close, symbols)
 
 # Create the exchange.
 num_exchanges = 1
-agents.extend([ ExchangeAgent(j, "Exchange Agent {}".format(j), "ExchangeAgent", mkt_open, mkt_close, [s for s in symbols], log_orders=log_orders, book_freq=book_freq, pipeline_delay = 0, computation_delay = 0, stream_history = 10, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32)))
+agents.extend([ ExchangeAgent(j, "Exchange Agent {}".format(j), "ExchangeAgent", mkt_open, mkt_close, [s for s in symbols], log_orders=log_orders, book_freq=book_freq, pipeline_delay = 0, computation_delay = 0, stream_history = 10, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)))
                 for j in range(agent_count, agent_count + num_exchanges) ])
 agent_types.extend(["ExchangeAgent" for j in range(num_exchanges)])
 agent_count += num_exchanges
@@ -253,14 +253,14 @@ hbl = [ (75, 250, 500, 1, 2), (75, 250, 500, 1, 3), (75, 250, 500, 1, 5), (75, 2
 # ZI strategy split.
 for i,x in enumerate(zi):
   strat_name = "Type {} [{} <= R <= {}, eta={}]".format(i+1, x[1], x[2], x[3])
-  agents.extend([ ZeroIntelligenceAgent(j, "ZI Agent {} {}".format(j, strat_name), "ZeroIntelligenceAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32)),log_orders=log_orders, symbol=symbol, starting_cash=starting_cash, sigma_n=sigma_n, r_bar=s['r_bar'], kappa=s['kappa'], sigma_s=s['sigma_s'], q_max=10, sigma_pv=5000000, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=0.005) for j in range(agent_count,agent_count+x[0]) ])
+  agents.extend([ ZeroIntelligenceAgent(j, "ZI Agent {} {}".format(j, strat_name), "ZeroIntelligenceAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)),log_orders=log_orders, symbol=symbol, starting_cash=starting_cash, sigma_n=sigma_n, r_bar=s['r_bar'], kappa=s['kappa'], sigma_s=s['sigma_s'], q_max=10, sigma_pv=5000000, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=0.005) for j in range(agent_count,agent_count+x[0]) ])
   agent_types.extend([ "ZeroIntelligenceAgent {}".format(strat_name) for j in range(x[0]) ])
   agent_count += x[0]
 
 # HBL strategy split.
 for i,x in enumerate(hbl):
   strat_name = "Type {} [{} <= R <= {}, eta={}, L={}]".format(i+1, x[1], x[2], x[3], x[4])
-  agents.extend([ HeuristicBeliefLearningAgent(j, "HBL Agent {} {}".format(j, strat_name), "HeuristicBeliefLearningAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32)), log_orders=log_orders, symbol=symbol, starting_cash=starting_cash, sigma_n=sigma_n, r_bar=s['r_bar'], kappa=s['kappa'], sigma_s=s['sigma_s'], q_max=10, sigma_pv=5000000, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=0.005, L=x[4]) for j in range(agent_count,agent_count+x[0]) ])
+  agents.extend([ HeuristicBeliefLearningAgent(j, "HBL Agent {} {}".format(j, strat_name), "HeuristicBeliefLearningAgent {}".format(strat_name), random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max)), log_orders=log_orders, symbol=symbol, starting_cash=starting_cash, sigma_n=sigma_n, r_bar=s['r_bar'], kappa=s['kappa'], sigma_s=s['sigma_s'], q_max=10, sigma_pv=5000000, R_min=x[1], R_max=x[2], eta=x[3], lambda_a=0.005, L=x[4]) for j in range(agent_count,agent_count+x[0]) ])
   agent_types.extend([ "HeuristicBeliefLearningAgent {}".format(strat_name) for j in range(x[0]) ])
   agent_count += x[0]
 
@@ -272,7 +272,7 @@ for i,x in enumerate(hbl):
 impact_time = midnight + pd.to_timedelta('09:30:00.0000002')
 
 i = agent_count
-agents.append(ImpactAgent(i, "Impact Agent {}".format(i), "ImpactAgent", symbol = "IBM", starting_cash = starting_cash, greed = greed, impact = impact, impact_time = impact_time, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=2**32))))
+agents.append(ImpactAgent(i, "Impact Agent {}".format(i), "ImpactAgent", symbol = "IBM", starting_cash = starting_cash, greed = greed, impact = impact, impact_time = impact_time, random_state = np.random.RandomState(seed=np.random.randint(low=0,high=np.iinfo(np.int32).max))))
 agent_types.append("Impact Agent {}".format(i))
 agent_count += 1
 

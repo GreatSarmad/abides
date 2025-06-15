@@ -50,6 +50,12 @@ class ZeroIntelligenceAgent(TradingAgent):
             np.round(self.random_state.normal(loc=0, scale=sqrt(sigma_pv), size=(q_max * 2))).tolist(),
             reverse=True)]
 
+    def _theta_value(self, idx):
+        """Return theta at idx, clamping out-of-range positive indices."""
+        if idx >= len(self.theta):
+            return self.theta[-1]
+        return self.theta[idx]
+
     def kernelStarting(self, startTime):
         # self.kernel is set in Agent.kernelInitializing()
         # self.exchangeID is set in TradingAgent.kernelStarting()
@@ -74,9 +80,9 @@ class ZeroIntelligenceAgent(TradingAgent):
 
         # Start with surplus as private valuation of shares held.
         if H > 0:
-            surplus = sum([self.theta[x + self.q_max - 1] for x in range(1, H + 1)])
+            surplus = sum(self._theta_value(x + self.q_max - 1) for x in range(1, H + 1))
         elif H < 0:
-            surplus = -sum([self.theta[x + self.q_max - 1] for x in range(H + 1, 1)])
+            surplus = -sum(self._theta_value(x + self.q_max - 1) for x in range(H + 1, 1))
         else:
             surplus = 0
 
@@ -238,7 +244,8 @@ class ZeroIntelligenceAgent(TradingAgent):
 
         # Determine the agent's total valuation.
         q += (self.q_max - 1)
-        theta = self.theta[q + 1 if buy else q]
+        idx = q + 1 if buy else q
+        theta = self._theta_value(idx)
         v = r_T + theta
 
         log_print("{} total unit valuation is {} (theta = {})", self.name, v, theta)
